@@ -3,5 +3,4 @@ export interface QueryParams {
   limit?: number;
   sortBy?: string;
   order?: string;
-  select: string;
 }
