@@ -1,0 +1,76 @@
+<h1
+  class="text-center my-4 fw-bold text-primary display-6 display-md-4 display-lg-3"
+>
+  <i class="bi bi-box-seam me-2"></i>
+  {{ title | titlecase }}
+</h1>
+
+<div class="row mb-4 justify-content-center">
+  <div class="col-12 col-md-6 mb-3 mb-md-0">
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control form-control-lg rounded-3"
+        placeholder="Buscar por nombre..."
+        [(ngModel)]="name"
+        (keyup.enter)="loadProductsByName()"
+      />
+      <button class="btn btn-primary" (click)="loadProductsByName()">
+        Buscar
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <div *ngIf="products.length === 0" class="alert alert-warning text-center">
+    <strong>¡Lo sentimos!</strong> No se encontraron productos que coincidan con
+    tu búsqueda.
+  </div>
+
+  <div
+    class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4"
+    *ngIf="products.length > 0"
+  >
+    <div class="col" *ngFor="let product of products">
+      <div class="card h-100">
+        <img
+          [src]="product.thumbnail"
+          [alt]="product.title"
+          class="card-img-top"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{ product.title }}</h5>
+          <p class="card-text">{{ product.price | currency }}</p>
+          <div class="card-footer bg-transparent border-top-0">
+            <a
+              class="btn btn-primary w-100"
+              [routerLink]="['/productos', product.id]"
+            >
+              {{ "ver detalle" | titlecase }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-center mt-3" *ngIf="currentPage">Página {{ currentPage }}</p>
+
+  <nav class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="queryParams.skip === 0">
+        <button
+          class="page-link"
+          (click)="previous()"
+          [disabled]="queryParams.skip === 0"
+        >
+          &laquo; Anterior
+        </button>
+      </li>
+      <li class="page-item">
+        <button class="page-link" (click)="next()">Siguiente &raquo;</button>
+      </li>
+    </ul>
+  </nav>
+</div>
